@@ -76,7 +76,7 @@ sub import_text {
 	};
 	
 	try {
-		open($fd, '<:encoding(UTF-8)', $filename) || croak("Could not open file: $!");
+		open($fd, '<:encoding(UTF-8)', $filename) || confess("Could not open file: $!");
 		
 		while (<$fd>) {
 			chomp;
@@ -94,7 +94,7 @@ sub import_text {
 		
 		$import_chunk->();
 	} catch {
-		croak("$_");
+		confess("$_");
 	} finally {
 		close($fd);
 	};
@@ -126,10 +126,10 @@ sub import_chunk_inner {
 	my($orig_chunk) = { %{$chunk} };
 	
 	if (%{$chunk}) {
-		exists($chunk->{'title'})        || croak("Malformed record: no title. " . Dumper($orig_chunk));
-		exists($chunk->{'format'})       || croak("Malformed record: no format. " . Dumper($orig_chunk));
-		exists($chunk->{'release year'}) || croak("Malformed record: no release year. " . Dumper($orig_chunk));
-		exists($chunk->{'stars'})        || croak("Malformed record: no stars. " . Dumper($orig_chunk));
+		exists($chunk->{'title'})        || confess("Malformed record: no title. " . Dumper($orig_chunk));
+		exists($chunk->{'format'})       || confess("Malformed record: no format. " . Dumper($orig_chunk));
+		exists($chunk->{'release year'}) || confess("Malformed record: no release year. " . Dumper($orig_chunk));
+		exists($chunk->{'stars'})        || confess("Malformed record: no stars. " . Dumper($orig_chunk));
 		
 		my($title)        = delete($chunk->{'title'});
 		my($format)       = delete($chunk->{'format'});
@@ -144,8 +144,8 @@ sub import_chunk_inner {
 		
 		(!(%{$chunk})) || carp("Ignoring extraneous fields in record. ". Dumper($orig_chunk));
 		
-		looks_like_number($release_year) || croak("Malformed record: release year is not number. " . Dumper($orig_chunk));
-		(($config->{'release_year_min'} <= $release_year) && ($release_year <= $config->{'release_year_max'})) || croak("Malformed record: release year is out of $config->{'release_year_min'}..$config->{'release_year_max'} range. " . Dumper($orig_chunk));
+		looks_like_number($release_year) || confess("Malformed record: release year is not number. " . Dumper($orig_chunk));
+		(($config->{release_year_min} <= $release_year) && ($release_year <= $config->{release_year_max})) || confess("Malformed record: release year is out of $config->{release_year_min}..$config->{release_year_max} range. " . Dumper($orig_chunk));
 		
 		my($movie) = MovieDB::Application::Database::Movie->new(
 			application => $self->application,

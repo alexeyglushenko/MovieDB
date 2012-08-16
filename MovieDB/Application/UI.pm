@@ -33,7 +33,7 @@ sub main_loop {
 		try {
 			$cmd = $self->ui->ask(msg => 'Select action ("h" for help): ');
 		} catch {
-			croak("Exception: $_");
+			confess("Exception: $_");
 		};
 		
 		if (!defined($cmd)) {
@@ -83,8 +83,8 @@ sub choice {
 	my($self) = shift;
 	my(%kwarg) = (@_);
 	
-	my(@keys) = ();
-	my(@titles) = ();
+	my(@keys);
+	my(@titles);
 	
 	foreach(@{$kwarg{choices}}) {
 		my($key) = substr($_, 0, 1);

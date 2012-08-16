@@ -42,7 +42,7 @@ sub init {
 		});
 		
 		# load actors
-		my(@actors) = ();
+		my(@actors);
 		foreach (@{$self->{actors}}) {
 			my($actor) = MovieDB::Application::Database::Actor->new(application => $self->application, name => $_);
 			push(@actors, $actor);
@@ -77,7 +77,7 @@ sub get_by_id {
 		my($media_type) = MovieDB::Application::Database::MediaType->get_by_id($application, $media_type_id);
 		
 		$cursor = $session->resultset('Movie2Actor')->search({ movie_id => $id });
-		my(@actors) = ();
+		my(@actors);
 		while (my $actor = $cursor->next) {
 			push(@actors, MovieDB::Application::Database::Actor->get_by_id($application, $actor->actor_id));
 		}
@@ -112,7 +112,7 @@ sub list {
 	
 	$cursor = $session->resultset('Movie')->search({}, { order_by => {-asc => $kwarg{sort_field} } });
 	
-	my(@results) = ();
+	my(@results);
 	if ($cursor) {
 		while (my $movie = $cursor->next) {
 			push(@results, $cls->get_by_id($application, $movie->id));
@@ -168,13 +168,13 @@ sub format_card {
 	my($format)       = $self->media_type->name;
 	my($stars)        = join(', ', map { $_->name } @{$self->actors});
 	
-	(my $card = <<HERE_EOF) =~ s/^\s*//gm;
+	(my $card = <<CARD_EOF) =~ s/^\s*//gm;
 		ID: $id
 		Title: $title
 		Release Year: $release_year
 		Format: $format
 		Stars: $stars
-HERE_EOF
+CARD_EOF
 	chomp $card;
 	
 	return $card;

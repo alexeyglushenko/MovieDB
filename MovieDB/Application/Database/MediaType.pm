@@ -48,4 +48,23 @@ sub get_by_id {
 	}
 }
 
+sub list_names {
+	my($cls) = shift;
+	my($application) = shift->application;
+	my($session) = $application->session;
+	my(%kwarg) = (@_);
+	my($cursor);
+	
+	$cursor = $session->resultset('MediaType')->search({}, { order_by => {-asc => 'name' } });
+	
+	my(@names);
+	if ($cursor) {
+		while (my $movie = $cursor->next) {
+			push(@names, $movie->name);
+		}
+	}
+	
+	return \@names;
+}
+
 1;

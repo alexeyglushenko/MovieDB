@@ -22,7 +22,7 @@ sub execute {
 		
 		return 1;
 	} catch {
-		croak("Could not delete movie $movie due to error: $_");
+		confess("Could not delete movie $movie due to error: $_");
 		
 		return 0;
 	};
