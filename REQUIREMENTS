@@ -1,0 +1,29 @@
+=== Perl
+
+MovieDB is expected to be run at least in Perl 5.10.
+
+=== Database
+
+MovieDB assumes background database is PostreSQL >= v9.0, however it may work on lower versions.
+
+=== Packages
+
+MovieDB depends on following CPAN packages and their default dependencies:
+
+	* Carp
+		For pretty-formatted die and warn messages.
+	
+	* Try::Tiny
+		For exception handling.
+	
+	* Data::Dumper::Perltidy
+		For pretty-printing dumped objects while debugging.
+	
+	* ToolSet
+		For automating boilerplate use, pragma and version code.
+	
+	* DBIx::Class
+		Object Relational Mapper
+	
+	* UUID::Tiny
+		For creating UUID4 primary keys
